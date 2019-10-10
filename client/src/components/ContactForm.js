@@ -1,31 +1,20 @@
 import React, { Component } from 'react'
-import axios from "axios"
+import axios from "axios";
 
 class ContactForm extends Component {
-
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
         const message = document.getElementById('message').value;
-        axios({
-            method: "POST",
-            url: "http://localhost:3002/send",
-            data: {
-                name: name,
-                email: email,
-                message: message
-            }
-        }).then((response) => {
-            if (response.data.msg === 'success') {
-                alert("Message Sent.");
-                this.resetForm()
-            } else if (response.data.msg === 'fail') {
-                alert("Message failed to send.")
-            }
+        axios.post("http://localhost:5007/send", {
+            name,
+            email,
+            message
         })
+        .then((res) => { console.log(res) })
+        .catch((err) => { console.log(err.response) })
     }
-
 
     resetForm() {
         document.getElementById('contact-form').reset();
@@ -36,16 +25,16 @@ class ContactForm extends Component {
 
             <form id="contact-form" onSubmit={this.handleSubmit.bind(this)} method="POST">
                 <div>
-                    <label for="name">Name</label>
-                    <input type="text" id="name" />
+                    <label htmlFor="name">Name</label>
+                    <input type="text" id="name" autoComplete="off" />
                 </div>
                 <div>
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" id="email" />
+                    <label htmlFor="exampleInputEmail1">Email address</label>
+                    <input type="email" id="email" autoComplete="off" />
                 </div>
                 <div>
-                    <label for="message">Message</label>
-                    <textarea id="message"></textarea>
+                    <label htmlFor="message">Message</label>
+                    <textarea id="message" autoComplete="off"></textarea>
                 </div>
                 <button type="submit" >Submit</button>
             </form>
